@@ -1,27 +1,48 @@
-package com.example.todoapp.viewmodel
+package com.example.todoapp.ui
 
 import android.app.Application
 import androidx.lifecycle.ViewModelProvider.AndroidViewModelFactory
+import androidx.lifecycle.createSavedStateHandle
 import androidx.lifecycle.viewmodel.CreationExtras
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
 import com.example.todoapp.TodoApplication
+import com.example.todoapp.ui.screens.detail.DetailViewModel
+import com.example.todoapp.ui.screens.edit.EditViewModel
+import com.example.todoapp.ui.screens.entry.EntryViewModel
+import com.example.todoapp.ui.screens.home.HomeViewModel
 
 /**
  * Provides Factory to create instance of ViewModel for the entire app
  */
 object AppViewModelProvider {
     val Factory = viewModelFactory {
-        // Initializer for EditViewModel
+        // Initializer for DetailViewModel
         initializer {
-            EditViewModel(
+            DetailViewModel(
+                this.createSavedStateHandle(),
                 todoApplication().container.todoRepository
             )
         }
 
-        // Initializer for ListViewModel
+        // Initializer for EditViewModel
         initializer {
-            ListViewModel(
+            EditViewModel(
+                this.createSavedStateHandle(),
+                todoApplication().container.todoRepository
+            )
+        }
+
+        // Initializer for EntryViewModel
+        initializer {
+            EntryViewModel(
+                todoApplication().container.todoRepository
+            )
+        }
+
+        // Initializer for HomeViewModel
+        initializer {
+            HomeViewModel(
                 todoApplication().container.todoRepository
             )
         }
