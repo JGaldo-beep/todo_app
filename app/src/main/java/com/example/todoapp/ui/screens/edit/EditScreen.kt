@@ -6,7 +6,7 @@ import com.example.todoapp.navigation.NavigationDestination
 
 object EditDestination : NavigationDestination {
     override val route = "todo_details"
-    override val titleRes = R.string.edit_todo
+    override val titleRes = R.string.task_edit_title
     const val todoIdArg = "todoId"
     val routeWithArgs = "$route/{$todoIdArg}"
 }

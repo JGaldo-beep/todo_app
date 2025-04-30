@@ -1,4 +1,4 @@
-package com.example.todoapp.ui.screens.list
+package com.example.todoapp.ui.screens.home
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,8 @@ import androidx.compose.material3.MaterialTheme.typography
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -35,10 +36,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.todoapp.R
 import com.example.todoapp.data.model.Task
 import com.example.todoapp.navigation.NavigationDestination
 import com.example.todoapp.ui.screens.TodoAppBar
+import com.example.todoapp.ui.AppViewModelProvider
 
 object ListDestination : NavigationDestination {
     override val route = "list"
@@ -49,9 +52,12 @@ object ListDestination : NavigationDestination {
  * Entry route for List screen (Home)
  */
 @Composable
-fun ListScreen() {
+fun HomeScreen(
+    viewModel: HomeViewModel = viewModel(factory = AppViewModelProvider.Factory),
+    navigateToAddTask: () -> Unit
+) {
 
-    val coroutineScope = rememberCoroutineScope()
+    val homeUiState by viewModel.homeUiState.collectAsState()
 
     Scaffold(
         topBar = {
@@ -61,7 +67,7 @@ fun ListScreen() {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { /*TODO*/ },
+                onClick = navigateToAddTask,
                 modifier = Modifier.padding(20.dp)
             ) {
                 Icon(
@@ -72,9 +78,13 @@ fun ListScreen() {
         }
     ) { innerPadding ->
         ListBody(
-            tasksList = listOf(),
-            onCheckedChange = { _, _ -> },
-            onDeleteClick = {},
+            tasksList = homeUiState.tasksList,
+            onCheckedChange = { task, isChecked ->
+                viewModel.updateTask(task.copy(isDone = isChecked))
+            },
+            onDeleteClick = {
+                viewModel.deleteTask(it)
+            },
             contentPadding = innerPadding,
             modifier = Modifier.fillMaxSize()
         )
