@@ -1,4 +1,8 @@
 <resources>
     <string name="app_name">Todo App</string>
     <string name="edit_todo">Edit</string>
+    <string name="back_button">Back</string>
+    <string name="delete_button">Delete Task</string>
+    <string name="no_tasks_description">Oops!\nNo tasks in the list.\nTap + to add.</string>
+    <string name="task_entry_title">Add Task</string>
 </resources>

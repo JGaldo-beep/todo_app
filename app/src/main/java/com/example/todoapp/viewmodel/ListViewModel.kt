@@ -6,4 +6,5 @@ import com.example.todoapp.data.repository.TodoRepository
 class ListViewModel(
     private val todoRepository: TodoRepository
 ) : ViewModel() {
+
 }
