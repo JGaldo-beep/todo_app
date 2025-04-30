@@ -7,10 +7,14 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.todoapp.ui.screens.detail.DetailDestination
+import com.example.todoapp.ui.screens.detail.DetailScreen
 import com.example.todoapp.ui.screens.edit.EditDestination
 import com.example.todoapp.ui.screens.edit.EditScreen
-import com.example.todoapp.ui.screens.list.ListDestination
-import com.example.todoapp.ui.screens.list.ListScreen
+import com.example.todoapp.ui.screens.entry.EntryDestination
+import com.example.todoapp.ui.screens.entry.EntryScreen
+import com.example.todoapp.ui.screens.home.HomeScreen
+import com.example.todoapp.ui.screens.home.ListDestination
 
 @Composable
 fun TodoNavGraph(
@@ -23,14 +27,37 @@ fun TodoNavGraph(
         modifier = modifier
     ) {
         composable(route = ListDestination.route) {
-            ListScreen()
+            HomeScreen(
+                navigateToAddTask = {
+                    navController.navigate(EntryDestination.route)
+                }
+            )
         }
 
         composable(
-            route = EditDestination.routeWithArgs,
-            arguments = listOf(navArgument(EditDestination.todoIdArg) {
+            route = DetailDestination.routeWithArgs,
+            arguments = listOf(navArgument(DetailDestination.todoIdArg) {
                 type = NavType.IntType
             })
+        ) {
+            DetailScreen()
+        }
+
+        composable(
+            route = EntryDestination.route
+        ) {
+            EntryScreen(
+                navigateBack = {
+                    navController.popBackStack()
+                },
+                onNavigateUp = {
+                    navController.navigateUp()
+                }
+            )
+        }
+
+        composable(
+            route = EditDestination.routeWithArgs
         ) {
             EditScreen()
         }
